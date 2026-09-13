@@ -28,6 +28,10 @@
   .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--mustard);}
   .topbar .who{font-size:13px; opacity:0.85; display:flex; gap:14px; align-items:center;}
   .topbar button.link{background:none;border:none;color:var(--paper);text-decoration:underline; font-size:13px; padding:0;}
+  .gamebar{display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:20px; font-weight:700; font-size:13px;}
+  .gamebar .flame, .gamebar .star{font-size:14px;}
+  .xp-toast{position:fixed; top:80px; left:50%; transform:translateX(-50%); background:var(--mustard); color:var(--ink); font-weight:700; padding:10px 20px; border-radius:24px; box-shadow:0 4px 14px rgba(0,0,0,0.2); z-index:100; animation:xpPop 1.8s ease forwards;}
+  @keyframes xpPop{0%{opacity:0; transform:translateX(-50%) translateY(10px);} 15%{opacity:1; transform:translateX(-50%) translateY(0);} 80%{opacity:1;} 100%{opacity:0; transform:translateX(-50%) translateY(-10px);}}
 
   .wrap{max-width:840px; margin:0 auto; padding:32px 20px 80px;}
   .view{display:none;}
@@ -110,6 +114,26 @@
   @keyframes spin{to{transform:rotate(360deg);}}
   .qtype-fields{display:none;}
   .qtype-fields.active{display:block;}
+  .speak-btn{border:none; background:var(--chalk); border-radius:50%; width:26px; height:26px; font-size:13px; cursor:pointer; vertical-align:middle;}
+  .opt-speak{display:inline-block; float:right; opacity:0.6; cursor:pointer;}
+  .opt-speak:hover{opacity:1;}
+  .mic-btn{padding:0 16px; font-size:18px;}
+  .mic-btn:disabled{opacity:0.5;}
+  .order-list{list-style:none; padding:0; margin:0 0 14px;}
+  .order-item{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; margin-bottom:8px; border:1px solid var(--line); border-radius:8px; background:#fff;}
+  .order-item .n{font-family:'IBM Plex Mono'; font-weight:600; color:var(--ink-soft); width:22px;}
+  .order-item .arrows{display:flex; gap:4px;}
+  .order-item .arrows button{border:none; background:var(--chalk); border-radius:5px; width:26px; height:26px; cursor:pointer;}
+  .speaking-box{text-align:center; padding:24px; background:var(--chalk); border-radius:10px; margin-bottom:14px;}
+  .speaking-box .phrase{font-size:22px; font-weight:700; font-family:'Space Grotesk'; margin:10px 0;}
+  .speaking-box .transcript{font-size:14px; color:var(--ink-soft); min-height:20px; margin-top:10px;}
+  .answer-strip{min-height:52px; border-bottom:2px solid var(--line); padding:8px 4px; margin-bottom:20px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .tile-bank{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .tile{display:inline-block; padding:10px 16px; background:#fff; border:2px solid var(--line); border-bottom-width:3px; border-radius:10px; font-weight:600; font-size:14.5px; cursor:pointer; user-select:none; transition:transform .06s;}
+  .tile:active{transform:translateY(1px);}
+  .tile.placed{background:var(--chalk); border-color:var(--ink-soft);}
+  .tile.placed.correct{background:#E6F2EA; border-color:var(--forest); color:var(--forest);}
+  .tile.placed.incorrect{background:#F7E7E2; border-color:var(--brick); color:var(--brick);}
 </style>
 </head>
 <body>
@@ -310,12 +334,15 @@ service cloud.firestore {
         <div class="sub">The AI generates these directly.</div>
         <div class="field"><label>Anything to focus on this time? (optional)</label><input type="text" id="ai-focus" placeholder="e.g. the ones I keep getting wrong"></div>
         <div class="field"><label>Question types to include</label>
-          <select id="ai-types" multiple size="5" style="height:auto;">
+          <select id="ai-types" multiple size="7" style="height:auto;">
             <option value="multiple_choice" selected>Multiple choice</option>
             <option value="true_false" selected>True / False</option>
             <option value="multi_select" selected>Multiple correct answers</option>
             <option value="fill_blank" selected>Fill in the blank</option>
             <option value="short_answer">Short answer (self-graded)</option>
+            <option value="speaking">Say it out loud (voice, good for languages)</option>
+            <option value="ordering">Put in order (sequence)</option>
+            <option value="word_bank">Build the sentence (word tiles, good for languages)</option>
           </select>
           <small class="hint">Cmd/Ctrl-click to select more than one.</small>
         </div>
@@ -350,6 +377,9 @@ service cloud.firestore {
             <option value="multi_select">Multiple correct answers</option>
             <option value="fill_blank">Fill in the blank</option>
             <option value="short_answer">Short answer (self-graded)</option>
+            <option value="speaking">Say it out loud (voice)</option>
+            <option value="ordering">Put in order (sequence)</option>
+            <option value="word_bank">Build the sentence (word tiles)</option>
           </select>
         </div>
         <div class="field"><label>Category</label><input type="text" id="mq-category" placeholder="e.g. General"></div>
@@ -494,9 +524,23 @@ async function onAuthChanged(user){
 
 function renderTopbar(){
   const el = document.getElementById('who-bar');
-  el.innerHTML = currentUser
-    ? `Signed in as <strong>${escapeHtml(currentUser.email)}</strong> &nbsp;·&nbsp; <button class="link" onclick="showView('settings')">AI setup</button> &nbsp;·&nbsp; <button class="link" onclick="doLogout()">Log out</button>`
-    : '';
+  if(!currentUser){ el.innerHTML=''; return; }
+  const streak = db ? (db.dailyStreak||0) : 0;
+  const xp = db ? (db.xp||0) : 0;
+  el.innerHTML = `
+    <span class="gamebar"><span class="flame">🔥</span> ${streak}</span>
+    <span class="gamebar"><span class="star">⭐</span> ${xp} XP</span>
+    &nbsp;·&nbsp; Signed in as <strong>${escapeHtml(currentUser.email)}</strong>
+    &nbsp;·&nbsp; <button class="link" onclick="showView('settings')">AI setup</button>
+    &nbsp;·&nbsp; <button class="link" onclick="doLogout()">Log out</button>`;
+}
+
+function bumpStreak(){
+  const today = new Date().toISOString().slice(0,10);
+  if(db.lastPracticeDate === today){ return; }
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  db.dailyStreak = (db.lastPracticeDate === yesterday) ? (db.dailyStreak||0)+1 : 1;
+  db.lastPracticeDate = today;
 }
 
 /* ============================================================
@@ -507,11 +551,13 @@ async function loadDb(){
   if(doc.exists){
     db = doc.data();
   } else {
-    db = { subjects:{}, activeSubject:null };
+    db = { subjects:{}, activeSubject:null, xp:0, dailyStreak:0, lastPracticeDate:null };
     seedDefaultSubject(db);
     db.activeSubject = 'Lab Safety Symbols';
     await saveDb();
   }
+  if(typeof db.xp!=='number') db.xp = 0;
+  if(typeof db.dailyStreak!=='number') db.dailyStreak = 0;
 }
 
 async function saveDb(){
@@ -652,7 +698,7 @@ async function generateInitialBank(){
   btn.disabled = true;
   status.innerHTML = '<span class="spinner"></span> Asking the AI to build your quiz…';
   status.style.color = 'var(--ink-soft)';
-  const types = ['multiple_choice','true_false','multi_select','fill_blank'];
+  const types = ['multiple_choice','true_false','multi_select','fill_blank','speaking','ordering','word_bank'];
   const prompt = buildPromptRaw(name, focus, pendingLevel, count, [], null, types, wantImages);
   try{
     const parsed = await callClaude(prompt, key);
@@ -699,7 +745,9 @@ function renderStudyMode(){
 function answerSummary(q){
   if(q.type==='multiple_choice' || q.type==='true_false') return q.options[q.correctIndex];
   if(q.type==='multi_select') return q.correctIndexes.map(i=>q.options[i]).join(', ');
-  if(q.type==='fill_blank' || q.type==='short_answer') return (q.acceptableAnswers||[]).join(' / ');
+  if(q.type==='fill_blank' || q.type==='short_answer' || q.type==='speaking') return (q.acceptableAnswers||[]).join(' / ');
+  if(q.type==='ordering') return (q.correctOrder||[]).join(' → ');
+  if(q.type==='word_bank') return q.correctSentence||'';
   return '';
 }
 
@@ -750,6 +798,11 @@ Each question object must have: "question", "type", "category" (or "General"), "
 - "multi_select": "options" (4-6 strings), "correctIndexes" (array of correct indices, at least 2)
 - "fill_blank": question text containing a blank shown as ____, "acceptableAnswers" (array of 1-3 acceptable strings, lowercase)
 - "short_answer": open question, "acceptableAnswers" (array with one ideal answer, for the learner's own self-check)
+- "speaking": only use this if the subject involves pronunciation, vocabulary, or spoken language (e.g. learning a language) — "acceptableAnswers" must be an array with exactly one item: the exact word or short phrase the learner should say out loud (keep original casing/accents)
+- "ordering": only use this if the subject has a natural sequence (steps, chronological events, ranked items) — "correctOrder" is an array of 3-5 strings in the correct order
+- "word_bank": ONLY use this for language-learning subjects (translating a word or short sentence) — "correctSentence" is the correct translation as a natural sentence, and "wordTiles" is an array containing every word of "correctSentence" split up PLUS 2-3 extra decoy words that don't belong, all shuffled
+
+${/language|vocab|verb|spanish|french|italian|german|portuguese|mandarin|japanese|korean|grammar/i.test(subject) ? 'This subject looks like it involves learning a language. Lean heavily into "word_bank" (translate a short sentence by tapping word tiles, Duolingo-style) and "speaking" (say a word or phrase out loud) as your PRIMARY question types — use multiple_choice and true_false only sparingly for grammar rules or vocabulary meaning. This should feel like a Duolingo lesson, not a written exam.' : ''}
 
 Return ONLY valid JSON, no preamble, no markdown fences: a JSON array of question objects as described.`;
 }
@@ -777,6 +830,13 @@ function normalizeQuestion(q){
     base.options = q.options||[]; base.correctIndexes = Array.isArray(q.correctIndexes)?q.correctIndexes:[0];
   } else if(base.type==='fill_blank' || base.type==='short_answer'){
     base.acceptableAnswers = Array.isArray(q.acceptableAnswers)?q.acceptableAnswers.map(a=>String(a).toLowerCase().trim()):[];
+  } else if(base.type==='speaking'){
+    base.acceptableAnswers = Array.isArray(q.acceptableAnswers)?q.acceptableAnswers.map(a=>String(a).trim()):[];
+  } else if(base.type==='ordering'){
+    base.correctOrder = Array.isArray(q.correctOrder) ? q.correctOrder : [];
+  } else if(base.type==='word_bank'){
+    base.correctSentence = q.correctSentence || '';
+    base.wordTiles = Array.isArray(q.wordTiles) ? q.wordTiles : (q.correctSentence||'').split(' ');
   }
   return base;
 }
@@ -873,8 +933,15 @@ function renderManualTypeFields(){
   } else if(type==='multi_select'){
     el.innerHTML = [0,1,2,3].map(i=>`<div class="field"><label>Option ${i+1}</label><input type="text" class="mq-opt"></div>`).join('')
       + `<div class="field"><label>Correct option indices, comma-separated (e.g. 0,2)</label><input type="text" id="mq-correct-indexes" value="0"></div>`;
-  } else {
+  } else if(type==='fill_blank' || type==='short_answer'){
     el.innerHTML = `<div class="field"><label>Acceptable answers, comma-separated</label><input type="text" id="mq-answers" placeholder="e.g. paris, city of light"></div>`;
+  } else if(type==='speaking'){
+    el.innerHTML = `<div class="field"><label>Exact word/phrase the learner should say</label><input type="text" id="mq-answers" placeholder="e.g. bonjour"></div>`;
+  } else if(type==='ordering'){
+    el.innerHTML = [0,1,2,3].map(i=>`<div class="field"><label>Item ${i+1} (in the correct order)</label><input type="text" class="mq-order-item"></div>`).join('');
+  } else if(type==='word_bank'){
+    el.innerHTML = `<div class="field"><label>Correct sentence (the translation)</label><input type="text" id="mq-sentence" placeholder="e.g. Je voudrais un café"></div>
+      <div class="field"><label>Extra decoy words, comma-separated (optional)</label><input type="text" id="mq-decoys" placeholder="e.g. thé, pain"></div>`;
   }
 }
 function addManualQuestion(){
@@ -891,6 +958,14 @@ function addManualQuestion(){
   } else if(type==='multi_select'){
     q.options = Array.from(document.querySelectorAll('.mq-opt')).map(i=>i.value.trim());
     q.correctIndexes = document.getElementById('mq-correct-indexes').value.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n));
+  } else if(type==='speaking'){
+    q.acceptableAnswers = [document.getElementById('mq-answers').value.trim()];
+  } else if(type==='ordering'){
+    q.correctOrder = Array.from(document.querySelectorAll('.mq-order-item')).map(i=>i.value.trim()).filter(Boolean);
+  } else if(type==='word_bank'){
+    q.correctSentence = document.getElementById('mq-sentence').value.trim();
+    const decoys = document.getElementById('mq-decoys').value.split(',').map(s=>s.trim()).filter(Boolean);
+    q.wordTiles = q.correctSentence.split(' ').concat(decoys);
   } else {
     q.acceptableAnswers = document.getElementById('mq-answers').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
   }
@@ -930,7 +1005,7 @@ function beginQuiz(questions, label){
   renderQuizQuestion();
 }
 
-const TYPE_LABELS = {multiple_choice:'Multiple Choice', true_false:'True / False', multi_select:'Select All That Apply', fill_blank:'Fill in the Blank', short_answer:'Short Answer'};
+const TYPE_LABELS = {multiple_choice:'Multiple Choice', true_false:'True / False', multi_select:'Select All That Apply', fill_blank:'Fill in the Blank', short_answer:'Short Answer', speaking:'Say It Out Loud', ordering:'Put in Order', word_bank:'Build the Sentence'};
 
 function renderQuizQuestion(){
   const q = quizState.questions[quizState.index];
@@ -951,8 +1026,100 @@ function renderQuizQuestion(){
     html += `<div style="display:flex;gap:8px;"><input type="text" id="fill-input" placeholder="Type your answer" style="flex:1;"><button class="btn btn-outline mic-btn" id="mic-fill" onclick="startVoiceInput('fill-input')" title="Answer by voice">🎤</button></div><div class="btn-row"><button class="btn btn-primary" onclick="answerFill()">Submit</button><button class="btn btn-ghost" onclick="answerFill(true)">Skip</button></div>`;
   } else if(q.type==='short_answer'){
     html += `<div style="display:flex;gap:8px;"><textarea id="short-input" rows="2" placeholder="Type your answer" style="flex:1;"></textarea><button class="btn btn-outline mic-btn" id="mic-short" onclick="startVoiceInput('short-input')" title="Answer by voice">🎤</button></div><div class="btn-row"><button class="btn btn-primary" onclick="revealShort()">Show correct answer</button></div><div id="short-reveal"></div>`;
+  } else if(q.type==='speaking'){
+    html += `<div class="speaking-box"><div style="font-size:12px;color:var(--ink-soft);">Say this out loud:</div><div class="phrase">${escapeHtml(q.acceptableAnswers[0])}</div><button class="btn btn-mustard mic-btn" onclick="startSpeakingCheck()">🎤 Record my answer</button><div class="transcript" id="speaking-transcript"></div></div><div class="btn-row"><button class="btn btn-primary" onclick="answerSpeaking()">Submit</button><button class="btn btn-ghost" onclick="answerSpeaking(true)">Skip</button></div>`;
+  } else if(q.type==='ordering'){
+    window._orderState = shuffle(q.correctOrder.map((t,i)=>t));
+    html += `<ul class="order-list" id="order-list"></ul><div class="btn-row"><button class="btn btn-primary" onclick="answerOrdering()">Submit order</button><button class="btn btn-ghost" onclick="answerOrdering(true)">Skip</button></div>`;
+  } else if(q.type==='word_bank'){
+    window._wordBankAnswer = [];
+    window._wordBankTiles = shuffle(q.wordTiles);
+    html += `<div class="answer-strip" id="answer-strip"></div><div class="tile-bank" id="tile-bank"></div><div class="btn-row"><button class="btn btn-primary" onclick="answerWordBank()">Check</button><button class="btn btn-ghost" onclick="resetWordBank()">Clear</button></div>`;
   }
   document.getElementById('quiz-body').innerHTML = html;
+  if(q.type==='ordering') renderOrderList();
+  if(q.type==='word_bank') renderWordBank();
+}
+
+function renderWordBank(){
+  document.getElementById('answer-strip').innerHTML = window._wordBankAnswer.map((w,i)=>`<span class="tile placed" onclick="removeWordTile(${i})">${escapeHtml(w)}</span>`).join('') || '<span style="color:var(--ink-soft);font-size:13px;">Tap words below to build your answer…</span>';
+  document.getElementById('tile-bank').innerHTML = window._wordBankTiles.map((w,i)=>`<span class="tile" onclick="pickWordTile(${i})">${escapeHtml(w)}</span>`).join('');
+}
+function pickWordTile(i){
+  const word = window._wordBankTiles.splice(i,1)[0];
+  window._wordBankAnswer.push(word);
+  renderWordBank();
+}
+function removeWordTile(i){
+  const word = window._wordBankAnswer.splice(i,1)[0];
+  window._wordBankTiles.push(word);
+  renderWordBank();
+}
+function resetWordBank(){
+  const q = quizState.questions[quizState.index];
+  window._wordBankTiles = window._wordBankTiles.concat(window._wordBankAnswer);
+  window._wordBankAnswer = [];
+  renderWordBank();
+}
+function answerWordBank(){
+  const q = quizState.questions[quizState.index];
+  const built = window._wordBankAnswer.join(' ').toLowerCase().replace(/[.,!?]/g,'').trim();
+  const target = q.correctSentence.toLowerCase().replace(/[.,!?]/g,'').trim();
+  const correct = built === target;
+  document.querySelectorAll('.tile.placed').forEach(t=>t.classList.add(correct?'correct':'incorrect'));
+  recordAndAdvance(correct, window._wordBankAnswer.join(' ')||'(empty)', q.correctSentence);
+}
+
+function renderOrderList(){
+  const list = document.getElementById('order-list');
+  list.innerHTML = window._orderState.map((item,i)=>`
+    <li class="order-item">
+      <span class="n">${i+1}</span><span style="flex:1;padding:0 10px;">${escapeHtml(item)}</span>
+      <span class="arrows">
+        <button onclick="moveOrderItem(${i},-1)" ${i===0?'disabled':''}>↑</button>
+        <button onclick="moveOrderItem(${i},1)" ${i===window._orderState.length-1?'disabled':''}>↓</button>
+      </span>
+    </li>`).join('');
+}
+function moveOrderItem(i,dir){
+  const arr = window._orderState;
+  const j = i+dir;
+  if(j<0||j>=arr.length) return;
+  [arr[i],arr[j]] = [arr[j],arr[i]];
+  renderOrderList();
+}
+function answerOrdering(skip){
+  const q = quizState.questions[quizState.index];
+  const correct = !skip && JSON.stringify(window._orderState) === JSON.stringify(q.correctOrder);
+  recordAndAdvance(correct, skip?'(skipped)':window._orderState.join(' → '), q.correctOrder.join(' → '));
+}
+
+function answerSpeaking(skip){
+  const q = quizState.questions[quizState.index];
+  const result = window._speakingResult;
+  const correct = !skip && result && result.correct;
+  recordAndAdvance(correct, skip?'(skipped)':(result?result.transcript:'(no attempt)'), q.acceptableAnswers.join(' / '));
+  window._speakingResult = null;
+}
+
+function startSpeakingCheck(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ alert('Voice input is not supported in this browser. Try Chrome or Edge.'); return; }
+  const recognition = new SpeechRecognition();
+  recognition.lang = navigator.language || 'en-US';
+  recognition.interimResults = false;
+  const el = document.getElementById('speaking-transcript');
+  el.textContent = 'Listening…';
+  recognition.onresult = (event) => {
+    const q = quizState.questions[quizState.index];
+    const transcript = event.results[0][0].transcript;
+    const norm = transcript.toLowerCase().trim();
+    const correct = q.acceptableAnswers.some(a=>norm.includes(a.toLowerCase()));
+    el.innerHTML = `You said: "${escapeHtml(transcript)}" — ${correct?'<strong style="color:var(--forest);">Sounds right!</strong>':'<strong style="color:var(--brick);">Not quite, try again or move on.</strong>'}`;
+    window._speakingResult = {transcript, correct};
+  };
+  recognition.onerror = () => { el.textContent = 'Could not hear that — try again.'; };
+  recognition.start();
 }
 
 /* ---- Voice: text-to-speech for reading questions/options aloud ---- */
@@ -1043,9 +1210,22 @@ function finishQuiz(){
   data.history.push(record);
   if(score >= Math.round(total*0.9)) data.streak = (data.streak||0)+1; else data.streak = 0;
   if(data.streak>=2) data.finalUnlocked = true;
+  const earnedXp = score*10 + (score===total ? 20 : 0);
+  db.xp = (db.xp||0) + earnedXp;
+  bumpStreak();
   saveDb();
+  renderTopbar();
+  showXpToast(earnedXp);
   renderResults(record);
   showView('results');
+}
+
+function showXpToast(amount){
+  const toast = document.createElement('div');
+  toast.className = 'xp-toast';
+  toast.textContent = '+'+amount+' XP 🎉';
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(), 1900);
 }
 
 function renderResults(record){
@@ -1086,7 +1266,7 @@ async function retestFocused(){
   document.getElementById('ai-subject-name').textContent = db.activeSubject;
   document.getElementById('ai-status').innerHTML = '<span class="spinner"></span> Building a retest focused on what you missed…';
   document.getElementById('ai-status').style.color = 'var(--ink-soft)';
-  const prompt = buildPromptRaw(db.activeSubject, '', data.level, 8, data.askedQuestionTexts||[], misses, ['multiple_choice','true_false','multi_select','fill_blank'], false);
+  const prompt = buildPromptRaw(db.activeSubject, '', data.level, 8, data.askedQuestionTexts||[], misses, ['multiple_choice','true_false','multi_select','fill_blank','speaking','ordering','word_bank'], false);
   try{
     const parsed = await callClaude(prompt, key);
     const normalized = parsed.map(normalizeQuestion);
