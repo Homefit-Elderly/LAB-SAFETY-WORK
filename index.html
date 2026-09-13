@@ -8,37 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#132A2E;
-    --ink-soft:#3C5458;
-    --paper:#F4F6F1;
-    --paper-raised:#FFFFFF;
-    --line:#D8DED2;
-    --mustard:#E3B23C;
-    --forest:#2F6B4F;
-    --brick:#B5533C;
-    --chalk:#EDEAE0;
-    --shadow: 0 1px 0 rgba(19,42,46,0.08);
-    --radius: 10px;
+    --ink:#132A2E; --ink-soft:#3C5458; --paper:#F4F6F1; --paper-raised:#FFFFFF;
+    --line:#D8DED2; --mustard:#E3B23C; --forest:#2F6B4F; --brick:#B5533C;
+    --chalk:#EDEAE0; --shadow: 0 1px 0 rgba(19,42,46,0.08); --radius: 10px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',system-ui,sans-serif;
-    line-height:1.5;
-    min-height:100vh;
-  }
+  body{background:var(--paper); color:var(--ink); font-family:'Inter',system-ui,sans-serif; line-height:1.5; min-height:100vh;}
   h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif; margin:0; letter-spacing:-0.01em;}
   .mono{font-family:'IBM Plex Mono',monospace;}
   a{color:inherit;}
   button{font-family:inherit;cursor:pointer;}
 
-  .topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 24px; background:var(--ink); color:var(--paper);
-    position:sticky; top:0; z-index:20;
-  }
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:var(--ink); color:var(--paper); position:sticky; top:0; z-index:20;}
   .topbar .brand{display:flex; align-items:center; gap:10px; font-family:'Space Grotesk'; font-weight:600; font-size:18px;}
   .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--mustard);}
   .topbar .who{font-size:13px; opacity:0.85; display:flex; gap:14px; align-items:center;}
@@ -48,22 +30,11 @@
   .view{display:none;}
   .view.active{display:block;}
 
-  .card{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:22px 24px;
-    margin-bottom:18px;
-    box-shadow:var(--shadow);
-  }
+  .card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);}
   .card h2{font-size:20px; margin-bottom:6px;}
   .card .sub{color:var(--ink-soft); font-size:14px; margin-bottom:16px;}
 
-  .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:11px 18px; border-radius:8px; border:1px solid transparent;
-    font-weight:600; font-size:14px; transition:transform .08s ease;
-  }
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:8px; border:1px solid transparent; font-weight:600; font-size:14px; transition:transform .08s ease;}
   .btn:active{transform:scale(0.98);}
   .btn-primary{background:var(--ink); color:var(--paper);}
   .btn-primary:disabled{background:#9AA79F; cursor:not-allowed;}
@@ -73,27 +44,23 @@
   .btn-ghost{background:var(--chalk); color:var(--ink);}
   .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
 
-  input[type=text], input[type=password], textarea, select{
-    width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
-    font-family:inherit; font-size:14px; background:#fff; color:var(--ink);
-  }
+  input[type=text], input[type=password], textarea, select{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-family:inherit; font-size:14px; background:#fff; color:var(--ink);}
   textarea{resize:vertical; min-height:110px;}
   label{font-size:13px; font-weight:600; color:var(--ink-soft); display:block; margin-bottom:6px;}
   .field{margin-bottom:14px;}
 
+  .level-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:16px;}
+  .level-opt{border:1.5px solid var(--line); border-radius:9px; padding:14px; background:#fff; text-align:left;}
+  .level-opt strong{display:block; font-size:14.5px; margin-bottom:3px;}
+  .level-opt span{font-size:12.5px; color:var(--ink-soft);}
+  .level-opt.selected{border-color:var(--forest); background:#EAF3EE;}
+
   .progress-track{height:6px; background:var(--chalk); border-radius:4px; overflow:hidden; margin-bottom:18px;}
   .progress-fill{height:100%; background:var(--forest); transition:width .3s ease;}
 
-  .q-tag{
-    display:inline-block; font-size:11px; font-weight:600; text-transform:uppercase;
-    letter-spacing:0.04em; background:var(--chalk); color:var(--ink-soft);
-    padding:3px 8px; border-radius:5px; margin-bottom:10px;
-  }
+  .q-tag{display:inline-block; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; background:var(--chalk); color:var(--ink-soft); padding:3px 8px; border-radius:5px; margin-bottom:10px;}
   .q-text{font-size:18px; font-weight:600; margin-bottom:16px;}
-  .option{
-    display:block; width:100%; text-align:left; padding:13px 14px; margin-bottom:9px;
-    border:1px solid var(--line); border-radius:8px; background:#fff; font-size:14.5px;
-  }
+  .option{display:block; width:100%; text-align:left; padding:13px 14px; margin-bottom:9px; border:1px solid var(--line); border-radius:8px; background:#fff; font-size:14.5px;}
   .option:hover{border-color:var(--ink-soft);}
   .option.correct{background:#E6F2EA; border-color:var(--forest); color:var(--forest);}
   .option.incorrect{background:#F7E7E2; border-color:var(--brick); color:var(--brick);}
@@ -117,16 +84,15 @@
   .search-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
   .search-row a.btn{text-decoration:none;}
   small.hint{color:var(--ink-soft); font-size:12.5px; display:block; margin-top:6px;}
-  .cert{
-    border:2px solid var(--mustard); border-radius:12px; padding:28px; text-align:center;
-    background:linear-gradient(180deg,#fff,#FBF9F2);
-  }
+  .cert{border:2px solid var(--mustard); border-radius:12px; padding:28px; text-align:center; background:linear-gradient(180deg,#fff,#FBF9F2);}
   .cert .n{font-family:'Space Grotesk'; font-size:34px; font-weight:700; margin:8px 0;}
   hr.div{border:none; border-top:1px solid var(--line); margin:18px 0;}
   .history-row{display:flex; justify-content:space-between; font-size:13.5px; padding:8px 0; border-bottom:1px dashed var(--line);}
   .history-row:last-child{border-bottom:none;}
   code.k{background:var(--chalk); padding:1px 6px; border-radius:4px; font-size:12.5px;}
   .note{font-size:12.5px; color:var(--ink-soft); background:var(--chalk); padding:10px 12px; border-radius:8px;}
+  .spinner{display:inline-block; width:14px; height:14px; border:2px solid var(--line); border-top-color:var(--ink); border-radius:50%; animation:spin .7s linear infinite; vertical-align:middle; margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
@@ -138,23 +104,29 @@
 
 <div class="wrap">
 
-  <!-- ============ SIGN IN VIEW ============ -->
+  <!-- ============ SIGN IN ============ -->
   <div class="view active" id="view-signin">
     <div class="card">
       <h2>Who's studying?</h2>
-      <div class="sub">Type a name to create or load your local profile. This isn't a real password-protected account — it just keeps your progress saved in this browser using localStorage. If you use a different device or browser, you'll start fresh there.</div>
-      <div class="field">
-        <label>Profile name</label>
-        <input type="text" id="signin-name" placeholder="e.g. Rita, or MathClass2026">
-      </div>
-      <div class="field">
-        <label>Optional PIN (just to avoid mixing up profiles on a shared computer)</label>
-        <input type="password" id="signin-pin" placeholder="Optional, 4 digits">
-      </div>
+      <div class="sub">Type a name to create or load your local profile. This keeps your progress saved in this browser (localStorage) — it's not a real cross-device account.</div>
+      <div class="field"><label>Profile name</label><input type="text" id="signin-name" placeholder="e.g. Rita, or MathClass2026"></div>
+      <div class="field"><label>Optional PIN (avoids mixing up profiles on a shared computer)</label><input type="password" id="signin-pin" placeholder="Optional, 4 digits"></div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="signIn()">Continue</button></div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS (API KEY) ============ -->
+  <div class="view" id="view-settings">
+    <div class="card">
+      <h2>AI setup</h2>
+      <div class="sub">To let the AI write questions for you automatically (no copy-pasting into another chat), it needs your own Anthropic API key. Get one free to start at <span class="mono">console.anthropic.com</span> → API Keys. It's stored only in this browser's localStorage and is sent only to Anthropic's servers.</div>
+      <div class="field"><label>Anthropic API key</label><input type="password" id="api-key" placeholder="sk-ant-..."></div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="signIn()">Continue</button>
+        <button class="btn btn-primary" onclick="saveApiKey()">Save key</button>
+        <button class="btn btn-outline" onclick="showView('home')">Back to Home</button>
       </div>
-      <div id="signin-existing" style="margin-top:16px;"></div>
+      <div id="settings-status" style="margin-top:10px;font-size:13px;"></div>
+      <div class="note" style="margin-top:14px;">If your browser blocks the direct call (CORS), the app will tell you and fall back to a copy/paste prompt as a backup — but for most people the direct call works fine.</div>
     </div>
   </div>
 
@@ -162,15 +134,12 @@
   <div class="view" id="view-home">
     <div class="card">
       <h2 id="home-greeting">Welcome back</h2>
-      <div class="sub">Pick a subject to practice, generate new questions, or jump into your next round.</div>
-      <div class="field">
-        <label>Subject</label>
-        <select id="subject-select" onchange="onSubjectChange()"></select>
-      </div>
+      <div class="sub">Pick a subject to practice, or add a new one and the AI will build your first quiz for it.</div>
+      <div class="field"><label>Subject</label><select id="subject-select" onchange="onSubjectChange()"></select></div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="startPractice()">Start Practice Quiz</button>
         <button class="btn btn-outline" onclick="showView('study')">Study Mode</button>
-        <button class="btn btn-outline" onclick="showView('ai')">Generate / Add Questions</button>
+        <button class="btn btn-outline" onclick="openAddQuestions()">Add More Questions</button>
         <button class="btn btn-ghost" onclick="showView('search')">Look things up</button>
       </div>
       <div id="final-exam-status" style="margin-top:16px;"></div>
@@ -183,13 +152,52 @@
     </div>
 
     <div class="card">
-      <h2>Manage subjects</h2>
-      <div class="sub">Add a brand new subject (any topic) to build a question bank for it.</div>
-      <div class="field">
-        <label>New subject name</label>
-        <input type="text" id="new-subject-name" placeholder="e.g. Spanish Verbs, World War 1, Cell Biology">
+      <h2>Add a new subject</h2>
+      <div class="sub">Any topic works. The AI will ask a couple of quick questions about your level, then generate your first quiz automatically.</div>
+      <div class="field"><label>New subject name</label><input type="text" id="new-subject-name" placeholder="e.g. Spanish Verbs, World War 1, Cell Biology"></div>
+      <button class="btn btn-outline" onclick="beginNewSubjectSetup()">Add subject</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:15px;">AI setup</h3>
+      <div class="sub" style="margin-bottom:8px;">Manage the API key that lets the AI generate questions automatically.</div>
+      <button class="btn btn-ghost" onclick="showView('settings')">Open AI setup</button>
+    </div>
+  </div>
+
+  <!-- ============ NEW SUBJECT SETUP (LEVEL QUESTIONS) ============ -->
+  <div class="view" id="view-newsubject">
+    <div class="card">
+      <h2>Set up "<span id="ns-subject-name"></span>"</h2>
+      <div class="sub">A couple of quick questions so the AI pitches the first quiz at the right level.</div>
+
+      <label>What's your current level in this subject?</label>
+      <div class="level-grid" id="ns-level-grid">
+        <button class="level-opt" data-level="Beginner" onclick="pickLevel(this)"><strong>Beginner</strong><span>Little to no prior knowledge</span></button>
+        <button class="level-opt" data-level="Intermediate" onclick="pickLevel(this)"><strong>Intermediate</strong><span>Know the basics already</span></button>
+        <button class="level-opt" data-level="Advanced" onclick="pickLevel(this)"><strong>Advanced</strong><span>Comfortable, want to be tested hard</span></button>
+        <button class="level-opt" data-level="Not sure" onclick="pickLevel(this)"><strong>Not sure</strong><span>Let the quiz figure it out</span></button>
       </div>
-      <button class="btn btn-outline" onclick="createSubject()">Add subject</button>
+
+      <div class="field">
+        <label>Anything specific you want to focus on? (optional)</label>
+        <input type="text" id="ns-focus" placeholder="e.g. irregular verbs, only WW1 causes, hazard symbols and risks">
+      </div>
+
+      <div class="field">
+        <label>How many questions for the first quiz?</label>
+        <select id="ns-count">
+          <option value="8">8 (quick)</option>
+          <option value="12" selected>12 (standard)</option>
+          <option value="18">18 (thorough)</option>
+        </select>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="ns-generate-btn" onclick="generateInitialBank()">Generate my quiz with AI</button>
+        <button class="btn btn-outline" onclick="showView('home')">Cancel</button>
+      </div>
+      <div id="ns-status" style="margin-top:12px;font-size:13px;"></div>
     </div>
   </div>
 
@@ -208,10 +216,7 @@
     <div class="card">
       <h2>Look something up</h2>
       <div class="sub">This app can't embed live search results (that needs a paid API key and a backend), but it can open a real search pre-filled with your topic in a new tab.</div>
-      <div class="field">
-        <label>What do you want to look up?</label>
-        <input type="text" id="search-query" placeholder="e.g. mitosis vs meiosis">
-      </div>
+      <div class="field"><label>What do you want to look up?</label><input type="text" id="search-query" placeholder="e.g. mitosis vs meiosis"></div>
       <div class="search-row">
         <a class="btn btn-outline" id="search-google" target="_blank">Search Google</a>
         <a class="btn btn-outline" id="search-wikipedia" target="_blank">Search Wikipedia</a>
@@ -222,45 +227,37 @@
     </div>
   </div>
 
-  <!-- ============ AI GENERATOR ============ -->
+  <!-- ============ ADD MORE QUESTIONS (AI, AUTOMATIC) ============ -->
   <div class="view" id="view-ai">
     <div class="card">
-      <h2>Generate or add questions</h2>
-      <div class="sub">Two ways to get good questions into this subject's bank: paste your own Anthropic API key for a direct in-browser attempt, or use the copy-paste workflow (always works, no key needed).</div>
-
-      <h3 style="font-size:15px;margin-bottom:8px;">Option A — Direct API call (needs your own key)</h3>
+      <h2>Add more questions to "<span id="ai-subject-name"></span>"</h2>
+      <div class="sub">The AI generates these directly — no need to visit another chat.</div>
       <div class="field">
-        <label>Anthropic API key (stored only in this browser's localStorage, never sent anywhere but api.anthropic.com)</label>
-        <input type="password" id="api-key" placeholder="sk-ant-...">
-      </div>
-      <div class="note">Heads up: browsers usually block direct calls to api.anthropic.com from a plain webpage (CORS). If this fails, use Option B below — it always works.</div>
-      <div class="btn-row"><button class="btn btn-mustard" onclick="generateWithApi()">Try direct generate (10 questions)</button></div>
-      <div id="api-status" style="margin-top:10px;font-size:13px;"></div>
-
-      <hr class="div">
-
-      <h3 style="font-size:15px;margin-bottom:8px;">Option B — Copy/paste workflow (always works)</h3>
-      <p style="font-size:13.5px;color:var(--ink-soft);">1. Copy the prompt below. 2. Paste it into Claude, ChatGPT, or any AI chat. 3. Copy its JSON reply back into the box underneath and load it.</p>
-      <div class="field">
-        <label>Ready-made prompt for this subject</label>
-        <textarea id="ai-prompt" rows="10" readonly></textarea>
+        <label>Anything to focus on this time? (optional)</label>
+        <input type="text" id="ai-focus" placeholder="e.g. the ones I keep getting wrong">
       </div>
       <div class="btn-row">
-        <button class="btn btn-outline" onclick="copyPrompt()">Copy prompt</button>
-        <a class="btn btn-outline" href="https://claude.ai/new" target="_blank">Open Claude</a>
-        <a class="btn btn-outline" href="https://chatgpt.com/" target="_blank">Open ChatGPT</a>
+        <button class="btn btn-mustard" id="ai-generate-btn" onclick="generateMoreQuestions()">Generate 10 more questions</button>
+        <button class="btn btn-outline" onclick="showView('home')">Back to Home</button>
       </div>
-      <div class="field" style="margin-top:16px;">
-        <label>Paste the AI's JSON reply here</label>
-        <textarea id="ai-json-input" rows="8" placeholder='[{"question":"...","type":"name-to-risk","category":"...","options":["...","...","...","..."],"correctIndex":0}]'></textarea>
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="loadAiJson()">Load these questions into the bank</button>
-      </div>
-      <div id="ai-load-status" style="margin-top:10px;font-size:13px;"></div>
+      <div id="ai-status" style="margin-top:12px;font-size:13px;"></div>
 
-      <hr class="div">
-      <div class="btn-row"><button class="btn btn-outline" onclick="showView('home')">Back to Home</button></div>
+      <div id="ai-fallback" style="display:none; margin-top:18px;">
+        <hr class="div">
+        <h3 style="font-size:15px;margin-bottom:8px;">Backup option — copy/paste workflow</h3>
+        <p style="font-size:13.5px;color:var(--ink-soft);">Your browser blocked the direct call, or no key is set. Copy this prompt into Claude or ChatGPT instead, then paste the reply back below.</p>
+        <div class="field"><textarea id="ai-prompt" rows="8" readonly></textarea></div>
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="copyPrompt()">Copy prompt</button>
+          <a class="btn btn-outline" href="https://claude.ai/new" target="_blank">Open Claude</a>
+          <a class="btn btn-outline" href="https://chatgpt.com/" target="_blank">Open ChatGPT</a>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label>Paste the AI's JSON reply here</label>
+          <textarea id="ai-json-input" rows="8" placeholder='[{"question":"...","type":"recall","category":"...","options":["...","...","...","..."],"correctIndex":0}]'></textarea>
+        </div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="loadAiJson()">Load these questions into the bank</button></div>
+      </div>
     </div>
   </div>
 
@@ -301,8 +298,9 @@
 /* ============================================================
    STORAGE / PROFILE
    ============================================================ */
-let currentProfile = null; // {name, pin}
-let db = null; // full data object for current profile, persisted to localStorage
+let currentProfile = null;
+let db = null;
+let pendingLevel = 'Not sure';
 
 function storageKey(name){ return 'studytrainer_profile_' + name.trim().toLowerCase(); }
 
@@ -314,10 +312,7 @@ function signIn(){
   let existing = localStorage.getItem(key);
   if(existing){
     const parsed = JSON.parse(existing);
-    if(parsed.pin && parsed.pin !== pin){
-      alert('This profile has a PIN set and it does not match.');
-      return;
-    }
+    if(parsed.pin && parsed.pin !== pin){ alert('This profile has a PIN set and it does not match.'); return; }
     db = parsed;
   } else {
     db = { name, pin: pin || '', subjects: {}, activeSubject: null };
@@ -327,13 +322,11 @@ function signIn(){
   currentProfile = name;
   saveDb();
   renderTopbar();
-  showView('home');
-  refreshHome();
+  const savedKey = localStorage.getItem('studytrainer_api_key');
+  if(!savedKey){ showView('settings'); } else { showView('home'); }
 }
 
-function saveDb(){
-  localStorage.setItem(storageKey(currentProfile), JSON.stringify(db));
-}
+function saveDb(){ localStorage.setItem(storageKey(currentProfile), JSON.stringify(db)); }
 
 function signOut(){
   currentProfile = null; db = null;
@@ -345,54 +338,50 @@ function signOut(){
 
 function renderTopbar(){
   const el = document.getElementById('who-bar');
-  if(currentProfile){
-    el.innerHTML = `Signed in as <strong>${escapeHtml(currentProfile)}</strong> &nbsp;·&nbsp; <button class="link" onclick="signOut()">Switch profile</button>`;
-  } else {
-    el.innerHTML = '';
-  }
+  el.innerHTML = currentProfile
+    ? `Signed in as <strong>${escapeHtml(currentProfile)}</strong> &nbsp;·&nbsp; <button class="link" onclick="showView('settings')">AI setup</button> &nbsp;·&nbsp; <button class="link" onclick="signOut()">Switch profile</button>`
+    : '';
 }
+
+/* ============================================================
+   API KEY SETTINGS
+   ============================================================ */
+function saveApiKey(){
+  const key = document.getElementById('api-key').value.trim();
+  const status = document.getElementById('settings-status');
+  if(!key){ status.textContent='Paste a key first.'; status.style.color='var(--brick)'; return; }
+  localStorage.setItem('studytrainer_api_key', key);
+  status.textContent = 'Saved. The AI will now generate questions automatically.';
+  status.style.color = 'var(--forest)';
+}
+
+function getApiKey(){ return localStorage.getItem('studytrainer_api_key') || ''; }
 
 /* ============================================================
    DEFAULT SEED SUBJECT — Lab Safety Symbols
    ============================================================ */
 function seedDefaultSubject(dbObj){
   dbObj.subjects['Lab Safety Symbols'] = {
+    level:'Not sure', focus:'',
     questions: [
-      mkQ("What is the risk of the 'Corrosive' hazard?", 'name-to-risk', 'Body Harm',
-        ["A substance that may destroy living tissue and other substances on contact. It causes a burn.","A substance that is poisonous if swallowed or breathed in.","A substance that can catch fire easily.","A substance that may cause irritation to skin or eyes."], 0),
-      mkQ("What is the risk of the 'Toxic' hazard?", 'name-to-risk', 'Body Harm',
-        ["A substance that is poisonous if swallowed or breathed in. It may even go through your skin.","A substance that may cause harm in some way.","A substance that gives off heat with other substances.","These are living organisms that may cause infection."], 0),
-      mkQ("What is the risk of the 'Harmful' hazard?", 'name-to-risk', 'Body Harm',
-        ["A substance that may cause harm in some way.","Emits radiation which causes damage to cells.","A substance that can catch fire easily.","A substance that may explode with heat or shock."], 0),
-      mkQ("What is the risk of the 'Irritant' hazard?", 'name-to-risk', 'Body Harm',
-        ["A substance that may cause irritation to the skin, eyes, or inside your body.","A substance that may destroy living tissue on contact.","These substances damage or pollute the environment.","A substance that may cause harm if inhaled."], 0),
-      mkQ("What is the risk of the 'Flammable' hazard?", 'name-to-risk', 'Fire & Explosion',
-        ["A substance that can catch fire easily.","A substance that gives off a large amount of heat with other substances.","Do not heat or puncture as this could explode.","A substance that may explode due to friction or shock."], 0),
-      mkQ("What is the risk of the 'Explosive' hazard?", 'name-to-risk', 'Fire & Explosion',
-        ["A substance that may explode if it comes into contact with a flame or heat, or due to friction or shock.","A substance that can catch fire easily.","A substance that is poisonous if swallowed.","These are living organisms that may cause infection."], 0),
-      mkQ("What is the risk of the 'Oxidising' hazard?", 'name-to-risk', 'Fire & Explosion',
-        ["This type of substance gives off a large amount of heat when in contact with other substances.","A substance that may destroy living tissue on contact.","Emits radiation which causes damage to cells.","A substance that damages or pollutes the environment."], 0),
-      mkQ("What is the risk of 'Compressed gas'?", 'name-to-risk', 'Fire & Explosion',
-        ["Do not heat or puncture as this could explode.","A substance that may cause irritation to skin or eyes.","A substance that is poisonous if swallowed or breathed in.","These are living organisms that may cause infection."], 0),
-      mkQ("What is the risk of 'Radioactive' hazard?", 'name-to-risk', 'Special Hazards',
-        ["Emits radiation which causes damage to cells (mutation/cancer).","A substance that can catch fire easily.","A substance that may cause harm in some way.","Do not heat or puncture as this could explode."], 0),
-      mkQ("What is the risk of the 'Environmental Hazard' symbol?", 'name-to-risk', 'Special Hazards',
-        ["These substances damage or pollute the environment.","A substance that is poisonous if swallowed or breathed in.","A substance that may explode due to friction or shock.","A substance that may cause irritation to the skin."], 0),
-      mkQ("What is the risk of 'Biohazard'?", 'name-to-risk', 'Special Hazards',
-        ["These are living organisms that may cause infection.","A substance that may destroy living tissue on contact.","This type of substance gives off heat with other substances.","A substance that can catch fire easily."], 0),
-      mkQ("What is the risk of the 'Aspirational hazard' symbol?", 'name-to-risk', 'Special Hazards',
-        ["A substance that may cause harm if inhaled (breathed in).","A substance that may explode with heat or shock.","Emits radiation which causes damage to cells.","These substances damage or pollute the environment."], 0),
+      mkQ("What is the risk of the 'Corrosive' hazard?", 'recall', 'Body Harm', ["A substance that may destroy living tissue and other substances on contact. It causes a burn.","A substance that is poisonous if swallowed or breathed in.","A substance that can catch fire easily.","A substance that may cause irritation to skin or eyes."], 0),
+      mkQ("What is the risk of the 'Toxic' hazard?", 'recall', 'Body Harm', ["A substance that is poisonous if swallowed or breathed in. It may even go through your skin.","A substance that may cause harm in some way.","A substance that gives off heat with other substances.","These are living organisms that may cause infection."], 0),
+      mkQ("What is the risk of the 'Harmful' hazard?", 'recall', 'Body Harm', ["A substance that may cause harm in some way.","Emits radiation which causes damage to cells.","A substance that can catch fire easily.","A substance that may explode with heat or shock."], 0),
+      mkQ("What is the risk of the 'Irritant' hazard?", 'recall', 'Body Harm', ["A substance that may cause irritation to the skin, eyes, or inside your body.","A substance that may destroy living tissue on contact.","These substances damage or pollute the environment.","A substance that may cause harm if inhaled."], 0),
+      mkQ("What is the risk of the 'Flammable' hazard?", 'recall', 'Fire & Explosion', ["A substance that can catch fire easily.","A substance that gives off a large amount of heat with other substances.","Do not heat or puncture as this could explode.","A substance that may explode due to friction or shock."], 0),
+      mkQ("What is the risk of the 'Explosive' hazard?", 'recall', 'Fire & Explosion', ["A substance that may explode if it comes into contact with a flame or heat, or due to friction or shock.","A substance that can catch fire easily.","A substance that is poisonous if swallowed.","These are living organisms that may cause infection."], 0),
+      mkQ("What is the risk of the 'Oxidising' hazard?", 'recall', 'Fire & Explosion', ["This type of substance gives off a large amount of heat when in contact with other substances.","A substance that may destroy living tissue on contact.","Emits radiation which causes damage to cells.","A substance that damages or pollutes the environment."], 0),
+      mkQ("What is the risk of 'Compressed gas'?", 'recall', 'Fire & Explosion', ["Do not heat or puncture as this could explode.","A substance that may cause irritation to skin or eyes.","A substance that is poisonous if swallowed or breathed in.","These are living organisms that may cause infection."], 0),
+      mkQ("What is the risk of 'Radioactive' hazard?", 'recall', 'Special Hazards', ["Emits radiation which causes damage to cells (mutation/cancer).","A substance that can catch fire easily.","A substance that may cause harm in some way.","Do not heat or puncture as this could explode."], 0),
+      mkQ("What is the risk of the 'Environmental Hazard' symbol?", 'recall', 'Special Hazards', ["These substances damage or pollute the environment.","A substance that is poisonous if swallowed or breathed in.","A substance that may explode due to friction or shock.","A substance that may cause irritation to the skin."], 0),
+      mkQ("What is the risk of 'Biohazard'?", 'recall', 'Special Hazards', ["These are living organisms that may cause infection.","A substance that may destroy living tissue on contact.","This type of substance gives off heat with other substances.","A substance that can catch fire easily."], 0),
+      mkQ("What is the risk of the 'Aspirational hazard' symbol?", 'recall', 'Special Hazards', ["A substance that may cause harm if inhaled (breathed in).","A substance that may explode with heat or shock.","Emits radiation which causes damage to cells.","These substances damage or pollute the environment."], 0),
     ],
-    history: [], // {round, mode, score, total, catBreakdown, timestamp, misses:[]}
-    streak: 0,
-    finalUnlocked: false,
-    askedQuestionTexts: []
+    history: [], streak: 0, finalUnlocked: false, askedQuestionTexts: []
   };
 }
 
-function mkQ(question,type,category,options,correctIndex){
-  return {question,type,category,options,correctIndex};
-}
+function mkQ(question,type,category,options,correctIndex){ return {question,type,category,options,correctIndex}; }
 
 /* ============================================================
    VIEW SWITCHING
@@ -402,13 +391,11 @@ function showView(name){
   document.getElementById('view-'+name).classList.add('active');
   if(name==='home') refreshHome();
   if(name==='study') renderStudyMode();
-  if(name==='ai') renderAiPromptBox();
   if(name==='search') wireSearchLinks();
+  if(name==='settings'){ const k=getApiKey(); if(k) document.getElementById('api-key').value=k; }
 }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ============================================================
    HOME / DASHBOARD
@@ -435,21 +422,7 @@ function onSubjectChange(){
   renderFinalExamStatus();
 }
 
-function activeSubjectData(){
-  return db.subjects[db.activeSubject];
-}
-
-function createSubject(){
-  const name = document.getElementById('new-subject-name').value.trim();
-  if(!name){ alert('Type a subject name first.'); return; }
-  if(db.subjects[name]){ alert('That subject already exists.'); return; }
-  db.subjects[name] = {questions:[], history:[], streak:0, finalUnlocked:false, askedQuestionTexts:[]};
-  db.activeSubject = name;
-  saveDb();
-  document.getElementById('new-subject-name').value='';
-  refreshHome();
-  alert('Subject created. Now go to "Generate / Add Questions" to build its question bank.');
-}
+function activeSubjectData(){ return db.subjects[db.activeSubject]; }
 
 function renderDashboard(){
   const data = activeSubjectData();
@@ -480,10 +453,65 @@ function renderFinalExamStatus(){
   const data = activeSubjectData();
   const el = document.getElementById('final-exam-status');
   if(!data){ el.innerHTML=''; return; }
-  if(data.finalUnlocked){
-    el.innerHTML = `<div class="btn-row"><button class="btn btn-mustard" onclick="startFinalExam()">Take Final Exam</button></div>`;
-  } else {
-    el.innerHTML = `<span class="badge-lock">🔒 Final Exam locks until 2 strong rounds (11-12 correct) in a row — current streak: ${data.streak}/2</span>`;
+  el.innerHTML = data.finalUnlocked
+    ? `<div class="btn-row"><button class="btn btn-mustard" onclick="startFinalExam()">Take Final Exam</button></div>`
+    : `<span class="badge-lock">🔒 Final Exam locks until 2 strong rounds (11-12 correct) in a row — current streak: ${data.streak}/2</span>`;
+}
+
+/* ============================================================
+   NEW SUBJECT SETUP (LEVEL QUESTIONS) + AI GENERATION
+   ============================================================ */
+function beginNewSubjectSetup(){
+  const name = document.getElementById('new-subject-name').value.trim();
+  if(!name){ alert('Type a subject name first.'); return; }
+  if(db.subjects[name]){ alert('That subject already exists.'); return; }
+  document.getElementById('ns-subject-name').textContent = name;
+  document.getElementById('ns-focus').value='';
+  document.getElementById('ns-status').textContent='';
+  pendingLevel = 'Not sure';
+  document.querySelectorAll('#ns-level-grid .level-opt').forEach(b=>b.classList.remove('selected'));
+  document.querySelector('#ns-level-grid .level-opt[data-level="Not sure"]').classList.add('selected');
+  window._pendingSubjectName = name;
+  showView('newsubject');
+}
+
+function pickLevel(btn){
+  document.querySelectorAll('#ns-level-grid .level-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  pendingLevel = btn.dataset.level;
+}
+
+async function generateInitialBank(){
+  const name = window._pendingSubjectName;
+  const focus = document.getElementById('ns-focus').value.trim();
+  const count = parseInt(document.getElementById('ns-count').value,10);
+  const status = document.getElementById('ns-status');
+  const btn = document.getElementById('ns-generate-btn');
+  const key = getApiKey();
+  if(!key){ status.innerHTML='No API key saved yet.'; status.style.color='var(--brick)';
+    setTimeout(()=>showView('settings'), 900); return; }
+
+  btn.disabled = true;
+  status.innerHTML = '<span class="spinner"></span> Asking the AI to build your quiz…';
+  status.style.color = 'var(--ink-soft)';
+
+  const prompt = buildPromptRaw(name, focus, pendingLevel, count, []);
+  try{
+    const parsed = await callClaude(prompt, key);
+    db.subjects[name] = {level:pendingLevel, focus, questions:[], history:[], streak:0, finalUnlocked:false, askedQuestionTexts:[]};
+    db.activeSubject = name;
+    addParsedQuestions(parsed);
+    saveDb();
+    status.innerHTML = 'Done — added '+parsed.length+' questions. Taking you to your quiz…';
+    status.style.color = 'var(--forest)';
+    setTimeout(()=>{ btn.disabled=false; showView('home'); }, 800);
+  }catch(err){
+    btn.disabled = false;
+    status.innerHTML = 'Automatic generation failed in this browser (' + escapeHtml(err.message) + '). Creating the subject empty — open "Add More Questions" from Home to try again or use the backup copy/paste option.';
+    status.style.color = 'var(--brick)';
+    db.subjects[name] = {level:pendingLevel, focus, questions:[], history:[], streak:0, finalUnlocked:false, askedQuestionTexts:[]};
+    db.activeSubject = name;
+    saveDb();
   }
 }
 
@@ -494,14 +522,14 @@ function renderStudyMode(){
   const data = activeSubjectData();
   document.getElementById('study-title').textContent = 'Study Mode — ' + db.activeSubject;
   if(!data || data.questions.length===0){
-    document.getElementById('study-content').innerHTML = '<p>No questions yet for this subject. Go add some via "Generate / Add Questions".</p>';
+    document.getElementById('study-content').innerHTML = '<p>No questions yet for this subject. Go to "Add More Questions" from Home.</p>';
     return;
   }
   const byCat = {};
   data.questions.forEach(q=>{
     const c = q.category || 'General';
     byCat[c] = byCat[c] || [];
-    if(q.type==='name-to-risk' || !byCat[c].some(x=>x.question===q.question)) byCat[c].push(q);
+    byCat[c].push(q);
   });
   let html='';
   Object.keys(byCat).forEach(cat=>{
@@ -528,23 +556,20 @@ function wireSearchLinks(){
 }
 
 /* ============================================================
-   AI GENERATOR
+   AI CALL HELPERS
    ============================================================ */
-function buildPrompt(focusMistakes){
-  const data = activeSubjectData();
-  const subject = db.activeSubject;
-  const bankSample = data.questions.slice(0,20).map(q=>`${q.options[q.correctIndex]} (${q.category||'General'})`).join('\n');
-  const asked = data.askedQuestionTexts.slice(-40).join('\n') || 'none yet';
-  let focusBlock = '';
-  if(focusMistakes && focusMistakes.length){
-    focusBlock = `The learner just got these wrong, focus mainly on these plus close neighbours:\n${focusMistakes.map(m=>'- '+m).join('\n')}\n\n`;
-  }
+function buildPromptRaw(subject, focus, level, count, askedTexts, missFocus){
+  const askedBlock = askedTexts.length ? askedTexts.slice(-40).join('\n') : 'none yet';
+  let extra = '';
+  if(level && level!=='Not sure') extra += `The learner describes their level as: ${level}. Calibrate difficulty accordingly.\n`;
+  if(focus) extra += `They specifically want to focus on: ${focus}.\n`;
+  if(missFocus && missFocus.length) extra += `They just got these wrong, prioritise these and close neighbours:\n${missFocus.map(m=>'- '+m).join('\n')}\n`;
   return `You are a quiz generator for a student studying: "${subject}".
+${extra}
+Questions already asked this session (do NOT repeat these or near-identical phrasing):
+${askedBlock}
 
-${bankSample ? 'Existing reference facts already in their bank:\n'+bankSample+'\n\n' : ''}${focusBlock}Questions already asked this session (do NOT repeat these or near-identical phrasing):
-${asked}
-
-Generate 10 new multiple-choice questions about "${subject}".
+Generate ${count} new multiple-choice questions about "${subject}".
 Use a genuine MIX of question styles, not just one repeated format:
 - direct fact recall
 - short real-world scenario application
@@ -568,90 +593,104 @@ Return ONLY valid JSON, no preamble, no markdown code fences, in this exact stru
 ]`;
 }
 
-function renderAiPromptBox(){
-  document.getElementById('ai-prompt').value = buildPrompt();
-  const key = localStorage.getItem('studytrainer_api_key');
-  if(key) document.getElementById('api-key').value = key;
+async function callClaude(prompt, key){
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key': key,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens: 3000, messages:[{role:'user', content: prompt}] })
+  });
+  if(!resp.ok){ throw new Error('HTTP '+resp.status+' — check your API key / billing'); }
+  const data = await resp.json();
+  const text = data.content.map(b=>b.text||'').join('\n');
+  const clean = text.replace(/```json|```/g,'').trim();
+  const parsed = JSON.parse(clean);
+  if(!Array.isArray(parsed) || !parsed.length) throw new Error('Unexpected response shape');
+  return parsed;
+}
+
+function addParsedQuestions(parsed){
+  const data = activeSubjectData();
+  parsed.forEach(q=>{
+    if(q && q.question && Array.isArray(q.options) && q.options.length===4 && typeof q.correctIndex==='number'){
+      data.questions.push({question:q.question, type:q.type||'recall', category:q.category||'General', options:q.options, correctIndex:q.correctIndex});
+    }
+  });
+  data.askedQuestionTexts = (data.askedQuestionTexts||[]).concat(parsed.map(q=>q.question));
+}
+
+/* ============================================================
+   ADD MORE QUESTIONS VIEW
+   ============================================================ */
+function openAddQuestions(){
+  document.getElementById('ai-subject-name').textContent = db.activeSubject;
+  document.getElementById('ai-focus').value='';
+  document.getElementById('ai-status').textContent='';
+  document.getElementById('ai-fallback').style.display='none';
+  showView('ai');
+}
+
+async function generateMoreQuestions(missFocus){
+  const data = activeSubjectData();
+  const focus = document.getElementById('ai-focus').value.trim();
+  const status = document.getElementById('ai-status');
+  const btn = document.getElementById('ai-generate-btn');
+  const key = getApiKey();
+  if(!key){ status.innerHTML='No API key saved yet — opening AI setup.'; status.style.color='var(--brick)'; setTimeout(()=>showView('settings'),800); return; }
+
+  btn.disabled = true;
+  status.innerHTML = '<span class="spinner"></span> Generating questions…';
+  status.style.color = 'var(--ink-soft)';
+  const prompt = buildPromptRaw(db.activeSubject, focus, data.level, 10, data.askedQuestionTexts||[], missFocus);
+  try{
+    const parsed = await callClaude(prompt, key);
+    addParsedQuestions(parsed);
+    saveDb();
+    status.innerHTML = 'Added '+parsed.length+' new questions to the bank.';
+    status.style.color = 'var(--forest)';
+    btn.disabled = false;
+  }catch(err){
+    status.innerHTML = 'Direct call failed (' + escapeHtml(err.message) + '). Use the backup option below.';
+    status.style.color = 'var(--brick)';
+    btn.disabled = false;
+    document.getElementById('ai-prompt').value = prompt;
+    document.getElementById('ai-fallback').style.display='block';
+  }
 }
 
 function copyPrompt(){
   const ta = document.getElementById('ai-prompt');
-  ta.select();
-  document.execCommand('copy');
+  ta.select(); document.execCommand('copy');
   alert('Prompt copied. Paste it into Claude or ChatGPT, then bring the JSON reply back here.');
-}
-
-async function generateWithApi(){
-  const key = document.getElementById('api-key').value.trim();
-  const status = document.getElementById('api-status');
-  if(!key){ status.textContent='Paste an API key first, or use Option B below.'; status.style.color='var(--brick)'; return; }
-  localStorage.setItem('studytrainer_api_key', key);
-  status.textContent = 'Calling the API…';
-  status.style.color = 'var(--ink-soft)';
-  try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body: JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens: 2000,
-        messages:[{role:'user', content: buildPrompt()}]
-      })
-    });
-    if(!resp.ok){ throw new Error('HTTP '+resp.status); }
-    const data = await resp.json();
-    const text = data.content.map(b=>b.text||'').join('\n');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    addQuestionsToBank(parsed);
-    status.textContent = 'Success — added '+parsed.length+' questions to the bank.';
-    status.style.color = 'var(--forest)';
-  }catch(err){
-    status.innerHTML = 'Direct call failed (likely blocked by the browser or an invalid key). Use Option B below instead — it always works. <span class="mono" style="font-size:11px;">('+escapeHtml(err.message)+')</span>';
-    status.style.color = 'var(--brick)';
-  }
 }
 
 function loadAiJson(){
   const raw = document.getElementById('ai-json-input').value.trim();
-  const status = document.getElementById('ai-load-status');
+  const status = document.getElementById('ai-status');
   if(!raw){ status.textContent='Paste the JSON reply first.'; status.style.color='var(--brick)'; return; }
   try{
     const clean = raw.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(clean);
     if(!Array.isArray(parsed) || !parsed.length) throw new Error('Not a valid question array');
-    addQuestionsToBank(parsed);
+    addParsedQuestions(parsed);
+    saveDb();
     status.textContent = 'Loaded '+parsed.length+' questions into "'+db.activeSubject+'".';
     status.style.color = 'var(--forest)';
     document.getElementById('ai-json-input').value='';
   }catch(err){
-    status.textContent = 'Could not parse that as valid JSON. Make sure you copied the full reply. ('+err.message+')';
+    status.textContent = 'Could not parse that as valid JSON. ('+err.message+')';
     status.style.color = 'var(--brick)';
   }
-}
-
-function addQuestionsToBank(parsed){
-  const data = activeSubjectData();
-  parsed.forEach(q=>{
-    if(q && q.question && Array.isArray(q.options) && q.options.length===4 && typeof q.correctIndex==='number'){
-      data.questions.push({
-        question:q.question, type:q.type||'recall', category:q.category||'General',
-        options:q.options, correctIndex:q.correctIndex
-      });
-    }
-  });
-  saveDb();
 }
 
 /* ============================================================
    QUIZ ENGINE
    ============================================================ */
-let quizState = null; // {mode, questions:[], index, answers:[], roundLabel}
+let quizState = null;
 
 function shuffle(arr){
   const a = arr.slice();
@@ -661,33 +700,19 @@ function shuffle(arr){
 
 function startPractice(){
   const data = activeSubjectData();
-  if(!data || data.questions.length<4){ alert('This subject needs at least 4 questions. Add more via "Generate / Add Questions".'); return; }
+  if(!data || data.questions.length<4){ alert('This subject needs at least 4 questions. Use "Add More Questions" first.'); return; }
   const n = Math.min(12, data.questions.length);
   const chosen = shuffle(data.questions).slice(0,n);
-  beginQuiz(chosen, 'Practice Round '+(data.history.length+1), 'practice', false);
+  beginQuiz(chosen, 'Practice Round '+(data.history.length+1));
 }
 
-function generateFocusedRetestFromMisses(missQuestions){
-  // Used when the user chooses "Retest with existing bank" fallback (no AI step needed)
-  const data = activeSubjectData();
-  const missTexts = missQuestions.map(m=>m.question);
-  let pool = data.questions.filter(q=>missTexts.includes(q.question));
-  const categories = [...new Set(pool.map(q=>q.category))];
-  const extras = data.questions.filter(q=>categories.includes(q.category) && !missTexts.includes(q.question));
-  const chosen = shuffle(pool.concat(shuffle(extras).slice(0,2)));
-  beginQuiz(chosen, 'Focused Retest (bank-based)', 'retest', true);
-}
-
-function beginQuiz(questions, label, mode, isRetest){
-  const data = activeSubjectData();
+function beginQuiz(questions, label){
   const withShuffledOptions = questions.map(q=>{
     const correctText = q.options[q.correctIndex];
     const opts = shuffle(q.options);
     return {...q, options:opts, correctIndex: opts.indexOf(correctText)};
   });
-  quizState = { mode, questions:withShuffledOptions, index:0, answers:[], roundLabel:label, isRetest };
-  data.askedQuestionTexts = (data.askedQuestionTexts||[]).concat(withShuffledOptions.map(q=>q.question));
-  saveDb();
+  quizState = { questions:withShuffledOptions, index:0, answers:[], roundLabel:label };
   showView('quiz');
   renderQuizQuestion();
 }
@@ -697,16 +722,10 @@ function renderQuizQuestion(){
   const total = quizState.questions.length;
   document.getElementById('quiz-progress-fill').style.width = Math.round(100*quizState.index/total)+'%';
   document.getElementById('quiz-round-label').textContent = quizState.roundLabel + ' — Question '+(quizState.index+1)+' of '+total;
-  const typeLabel = ({
-    'name-to-risk':'Name → Risk','risk-to-name':'Risk → Name','recall':'Recall',
-    'scenario':'Scenario','false-statement':'Spot the False Statement',
-    'category-match':'Category Match','compare-contrast':'Compare & Contrast','symbol-description':'Symbol'
-  })[q.type] || 'Question';
+  const typeLabel = ({recall:'Recall', scenario:'Scenario', 'false-statement':'Spot the False Statement', 'category-match':'Category Match', 'compare-contrast':'Compare & Contrast'})[q.type] || 'Question';
   let html = `<div class="q-tag">${typeLabel}${q.category?' · '+escapeHtml(q.category):''}</div>`;
   html += `<div class="q-text">${escapeHtml(q.question)}</div>`;
-  q.options.forEach((opt,i)=>{
-    html += `<button class="option" id="opt-${i}" onclick="answerQuiz(${i})">${escapeHtml(opt)}</button>`;
-  });
+  q.options.forEach((opt,i)=>{ html += `<button class="option" id="opt-${i}" onclick="answerQuiz(${i})">${escapeHtml(opt)}</button>`; });
   html += `<div class="btn-row"><button class="btn btn-ghost" onclick="answerQuiz(-1)">Skip</button></div>`;
   document.getElementById('quiz-body').innerHTML = html;
 }
@@ -732,21 +751,10 @@ function finishQuiz(){
   const score = quizState.answers.filter(a=>a.correct).length;
   const total = quizState.answers.length;
   const catMap = {};
-  quizState.answers.forEach(a=>{
-    const c = a.category||'General';
-    catMap[c] = catMap[c] || {correct:0,total:0};
-    catMap[c].total++;
-    if(a.correct) catMap[c].correct++;
-  });
+  quizState.answers.forEach(a=>{ const c=a.category||'General'; catMap[c]=catMap[c]||{correct:0,total:0}; catMap[c].total++; if(a.correct) catMap[c].correct++; });
   const record = {round: data.history.length+1, mode: quizState.roundLabel, score, total, catBreakdown:catMap, timestamp: Date.now(), misses: quizState.answers.filter(a=>!a.correct)};
   data.history.push(record);
-
-  // streak logic for final exam unlock
-  if(score >= Math.round(total*0.9)){
-    data.streak = (data.streak||0)+1;
-  } else {
-    data.streak = 0;
-  }
+  if(score >= Math.round(total*0.9)) data.streak = (data.streak||0)+1; else data.streak = 0;
   if(data.streak>=2) data.finalUnlocked = true;
   saveDb();
   renderResults(record);
@@ -762,8 +770,7 @@ function renderResults(record){
   `;
   let catHtml='';
   Object.keys(record.catBreakdown).forEach(c=>{
-    const b = record.catBreakdown[c];
-    const pct = Math.round(100*b.correct/b.total);
+    const b = record.catBreakdown[c]; const pct = Math.round(100*b.correct/b.total);
     catHtml += `<div class="bar-row"><div class="label">${escapeHtml(c)}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><div class="pct">${pct}%</div></div>`;
   });
   document.getElementById('results-categories').innerHTML = catHtml;
@@ -776,45 +783,54 @@ function renderResults(record){
     const curPct = Math.round(100*record.score/record.total);
     const diff = curPct-prevPct;
     const trendWord = diff>0? 'improved':(diff<0?'dropped':'stayed the same');
-    compHtml = `<h3 style="font-size:15px;margin:16px 0 8px;">Compared to last round</h3>
-      <p style="font-size:14px;">Previous: <strong>${prev.score}/${prev.total} (${prevPct}%)</strong> → This round: <strong>${record.score}/${record.total} (${curPct}%)</strong>. Your accuracy ${trendWord}${diff!==0?' by '+Math.abs(diff)+' points':''}.</p>`;
+    compHtml = `<h3 style="font-size:15px;margin:16px 0 8px;">Compared to last round</h3><p style="font-size:14px;">Previous: <strong>${prev.score}/${prev.total} (${prevPct}%)</strong> → This round: <strong>${record.score}/${record.total} (${curPct}%)</strong>. Your accuracy ${trendWord}${diff!==0?' by '+Math.abs(diff)+' points':''}.</p>`;
   }
   document.getElementById('results-comparison').innerHTML = compHtml;
 
   let missHtml = record.misses.length? '' : '<p style="font-size:13.5px;color:var(--ink-soft);">No misses — clean round!</p>';
-  record.misses.forEach(m=>{
-    missHtml += `<div class="miss-item"><div class="h">${escapeHtml(m.question)}</div>You picked: ${escapeHtml(m.picked)}<br>Correct: ${escapeHtml(m.correctAnswer)}</div>`;
-  });
+  record.misses.forEach(m=>{ missHtml += `<div class="miss-item"><div class="h">${escapeHtml(m.question)}</div>You picked: ${escapeHtml(m.picked)}<br>Correct: ${escapeHtml(m.correctAnswer)}</div>`; });
   document.getElementById('results-misses').innerHTML = missHtml;
 
   let actions = `<button class="btn btn-outline" onclick="showView('home')">Back to Home</button>`;
   if(record.misses.length>0){
-    actions += `<button class="btn btn-primary" onclick="showView('ai'); prefillFocusedPrompt()">Generate AI Focused Retest</button>`;
-    actions += `<button class="btn btn-ghost" onclick="quickBankRetest()">Quick Retest (existing bank)</button>`;
+    actions += `<button class="btn btn-primary" onclick="retestFocused()">Generate AI Focused Retest</button>`;
   } else {
     actions += `<button class="btn btn-primary" onclick="startPractice()">Practice Again</button>`;
   }
   document.getElementById('results-actions').innerHTML = actions;
-
   window._lastMisses = record.misses;
 }
 
-function quickBankRetest(){
-  generateFocusedRetestFromMisses(window._lastMisses||[]);
-}
-
-function prefillFocusedPrompt(){
+async function retestFocused(){
   const misses = (window._lastMisses||[]).map(m=>m.question+' → correct answer: '+m.correctAnswer);
-  document.getElementById('ai-prompt').value = buildPrompt(misses);
+  const key = getApiKey();
+  const data = activeSubjectData();
+  if(!key){ showView('settings'); return; }
+  showView('ai');
+  document.getElementById('ai-subject-name').textContent = db.activeSubject;
+  document.getElementById('ai-status').innerHTML = '<span class="spinner"></span> Building a retest focused on what you missed…';
+  document.getElementById('ai-status').style.color = 'var(--ink-soft)';
+  const prompt = buildPromptRaw(db.activeSubject, '', data.level, 8, data.askedQuestionTexts||[], misses);
+  try{
+    const parsed = await callClaude(prompt, key);
+    addParsedQuestions(parsed);
+    saveDb();
+    beginQuiz(parsed.map(q=>({question:q.question, type:q.type||'recall', category:q.category||'General', options:q.options, correctIndex:q.correctIndex})), 'Focused Retest');
+  }catch(err){
+    document.getElementById('ai-status').innerHTML = 'Direct call failed (' + escapeHtml(err.message) + '). Use the backup option below.';
+    document.getElementById('ai-status').style.color = 'var(--brick)';
+    document.getElementById('ai-prompt').value = prompt;
+    document.getElementById('ai-fallback').style.display='block';
+  }
 }
 
 function gradeMessage(score,total){
   const pct = score/total;
-  if(pct===1) return {short:'Perfect', long:'Perfect! You know this cold.'};
-  if(pct>=0.9) return {short:'Great', long:'Great job! Just a couple to review.'};
-  if(pct>=0.7) return {short:'Good', long:'Good progress — a few gaps to close.'};
-  if(pct>=0.5) return {short:'Okay', long:"Decent start — let's target the weak spots."};
-  return {short:'Needs work', long:'Keep practicing — try grouping concepts and reviewing basics.'};
+  if(pct===1) return {short:'Perfect'};
+  if(pct>=0.9) return {short:'Great'};
+  if(pct>=0.7) return {short:'Good'};
+  if(pct>=0.5) return {short:'Okay'};
+  return {short:'Needs work'};
 }
 
 /* ============================================================
@@ -828,7 +844,7 @@ function startFinalExam(){
   quizState = { mode:'final', questions: chosen.map(q=>{
       const correctText=q.options[q.correctIndex]; const opts=shuffle(q.options);
       return {...q, options:opts, correctIndex:opts.indexOf(correctText)};
-    }), index:0, answers:[], roundLabel:'FINAL EXAM', isRetest:false, noFeedback:true };
+    }), index:0, answers:[], roundLabel:'FINAL EXAM' };
   showView('quiz');
   renderFinalQuestion();
 }
@@ -839,9 +855,7 @@ function renderFinalQuestion(){
   document.getElementById('quiz-progress-fill').style.width = Math.round(100*quizState.index/total)+'%';
   document.getElementById('quiz-round-label').textContent = 'FINAL EXAM — Question '+(quizState.index+1)+' of '+total+' (no feedback until the end)';
   let html = `<div class="q-tag">${escapeHtml(q.category||'General')}</div><div class="q-text">${escapeHtml(q.question)}</div>`;
-  q.options.forEach((opt,i)=>{
-    html += `<button class="option" onclick="answerFinal(${i})">${escapeHtml(opt)}</button>`;
-  });
+  q.options.forEach((opt,i)=>{ html += `<button class="option" onclick="answerFinal(${i})">${escapeHtml(opt)}</button>`; });
   document.getElementById('quiz-body').innerHTML = html;
 }
 
@@ -869,19 +883,16 @@ function finishFinalExam(){
     body += `<div class="cert"><div style="font-size:13px;color:var(--ink-soft);">CERTIFICATE OF MASTERY</div><div class="n">${score}/${total} · ${pct}%</div><div>${escapeHtml(currentProfile)} — ${escapeHtml(db.activeSubject)}</div><div style="font-size:12px;color:var(--ink-soft);margin-top:8px;">${new Date().toLocaleDateString()}</div></div>`;
     body += `<p style="margin-top:14px;">Excellent — you've mastered this topic.</p>`;
   } else if(pct>=75){
-    body += `<h2>${score}/${total} · ${pct}%</h2><p>Solid — minor review needed. A little more focused practice and you'll be at mastery level.</p>`;
+    body += `<h2>${score}/${total} · ${pct}%</h2><p>Solid — minor review needed.</p>`;
   } else {
-    data.finalUnlocked = false;
-    data.streak = 0;
-    body += `<h2>${score}/${total} · ${pct}%</h2><p>Not quite yet — the exam has relocked. Go back and run a few more focused retests before trying again.</p>`;
+    data.finalUnlocked = false; data.streak = 0;
+    body += `<h2>${score}/${total} · ${pct}%</h2><p>Not quite yet — the exam has relocked. Go generate a few more focused retests before trying again.</p>`;
   }
   let catHtml = '<h3 style="font-size:15px;margin:14px 0 8px;">By category</h3>';
-  Object.keys(catMap).forEach(c=>{
-    const b=catMap[c]; const p=Math.round(100*b.correct/b.total);
-    catHtml += `<div class="bar-row"><div class="label">${escapeHtml(c)}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><div class="pct">${p}%</div></div>`;
-  });
+  Object.keys(catMap).forEach(c=>{ const b=catMap[c]; const p=Math.round(100*b.correct/b.total);
+    catHtml += `<div class="bar-row"><div class="label">${escapeHtml(c)}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><div class="pct">${p}%</div></div>`; });
   body += catHtml;
-  body += `<div class="btn-row"><button class="btn btn-outline" onclick="showView('home')">Back to Home</button>${pct<75?'<button class="btn btn-primary" onclick="showView(\'ai\')">Do a focused retest</button>':''}</div>`;
+  body += `<div class="btn-row"><button class="btn btn-outline" onclick="showView('home')">Back to Home</button>${pct<75?'<button class="btn btn-primary" onclick="openAddQuestions()">Do a focused retest</button>':''}</div>`;
   saveDb();
   document.getElementById('final-result-body').innerHTML = body;
   showView('final-result');
@@ -890,9 +901,7 @@ function finishFinalExam(){
 /* ============================================================
    INIT
    ============================================================ */
-window.onload = function(){
-  wireSearchLinks();
-};
+window.onload = function(){ wireSearchLinks(); };
 </script>
 </body>
 </html>
