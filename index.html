@@ -400,12 +400,12 @@ service cloud.firestore {
    FIREBASE CONFIG — REPLACE WITH YOUR OWN PROJECT'S VALUES
    ============================================================ */
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBejekcooOOiyH78ss5YprbXC1x4iGo3Rc",
+  authDomain: "study-trainer.firebaseapp.com",
+  projectId: "study-trainer",
+  storageBucket: "study-trainer.firebasestorage.app",
+  messagingSenderId: "297132725895",
+  appId: "1:297132725895:web:65bba2cf0321a1da984a22"
 };
 
 let auth, dbFire, currentUser = null;
@@ -946,20 +946,48 @@ function renderQuizQuestion(){
   document.getElementById('quiz-round-label').textContent = quizState.roundLabel + ' — Question '+(quizState.index+1)+' of '+total;
   let html = `<div class="q-tag">${TYPE_LABELS[q.type]||'Question'}</div>${q.category?`<div class="q-tag">${escapeHtml(q.category)}</div>`:''}`;
   if(q.imageUrl) html += `<img class="q-image" src="${escapeHtml(q.imageUrl)}" alt="">`;
-  html += `<div class="q-text">${escapeHtml(q.question)}</div>`;
+  html += `<div class="q-text">${escapeHtml(q.question)} <button class="speak-btn" onclick="speakText(${JSON.stringify(q.question)})" title="Listen">🔊</button></div>`;
 
   if(q.type==='multiple_choice' || q.type==='true_false'){
-    q.options.forEach((opt,i)=>{ html += `<button class="option" onclick="answerSingle(${i})">${escapeHtml(opt)}</button>`; });
+    q.options.forEach((opt,i)=>{ html += `<button class="option" onclick="answerSingle(${i})">${escapeHtml(opt)} <span class="opt-speak" onclick="event.stopPropagation(); speakText(${JSON.stringify(opt)})" title="Listen">🔊</span></button>`; });
     html += `<div class="btn-row"><button class="btn btn-ghost" onclick="answerSingle(-1)">Skip</button></div>`;
   } else if(q.type==='multi_select'){
     q.options.forEach((opt,i)=>{ html += `<label class="option-check" id="mopt-${i}"><input type="checkbox" value="${i}"> ${escapeHtml(opt)}</label>`; });
     html += `<div class="btn-row"><button class="btn btn-primary" onclick="answerMulti()">Submit</button><button class="btn btn-ghost" onclick="answerMulti(true)">Skip</button></div>`;
   } else if(q.type==='fill_blank'){
-    html += `<input type="text" id="fill-input" placeholder="Type your answer"><div class="btn-row"><button class="btn btn-primary" onclick="answerFill()">Submit</button><button class="btn btn-ghost" onclick="answerFill(true)">Skip</button></div>`;
+    html += `<div style="display:flex;gap:8px;"><input type="text" id="fill-input" placeholder="Type your answer" style="flex:1;"><button class="btn btn-outline mic-btn" id="mic-fill" onclick="startVoiceInput('fill-input')" title="Answer by voice">🎤</button></div><div class="btn-row"><button class="btn btn-primary" onclick="answerFill()">Submit</button><button class="btn btn-ghost" onclick="answerFill(true)">Skip</button></div>`;
   } else if(q.type==='short_answer'){
-    html += `<textarea id="short-input" rows="2" placeholder="Type your answer"></textarea><div class="btn-row"><button class="btn btn-primary" onclick="revealShort()">Show correct answer</button></div><div id="short-reveal"></div>`;
+    html += `<div style="display:flex;gap:8px;"><textarea id="short-input" rows="2" placeholder="Type your answer" style="flex:1;"></textarea><button class="btn btn-outline mic-btn" id="mic-short" onclick="startVoiceInput('short-input')" title="Answer by voice">🎤</button></div><div class="btn-row"><button class="btn btn-primary" onclick="revealShort()">Show correct answer</button></div><div id="short-reveal"></div>`;
   }
   document.getElementById('quiz-body').innerHTML = html;
+}
+
+/* ---- Voice: text-to-speech for reading questions/options aloud ---- */
+function speakText(text){
+  if(!('speechSynthesis' in window)){ alert('Your browser does not support reading text aloud.'); return; }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  window.speechSynthesis.speak(utter);
+}
+
+/* ---- Voice: speech-to-text for typing answers by voice ---- */
+function startVoiceInput(inputId){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ alert('Voice input is not supported in this browser. Try Chrome or Edge.'); return; }
+  const input = document.getElementById(inputId);
+  const recognition = new SpeechRecognition();
+  recognition.lang = navigator.language || 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  const micBtn = inputId==='fill-input' ? document.getElementById('mic-fill') : document.getElementById('mic-short');
+  if(micBtn){ micBtn.textContent = '●'; micBtn.disabled = true; }
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    input.value = transcript;
+  };
+  recognition.onerror = () => { alert('Could not hear that — try again or type your answer.'); };
+  recognition.onend = () => { if(micBtn){ micBtn.textContent = '🎤'; micBtn.disabled = false; } };
+  recognition.start();
 }
 
 function recordAndAdvance(correct, picked, correctAnswer){
